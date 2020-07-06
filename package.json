@@ -1,0 +1,21 @@
+{
+  "name": "simple-peer-realtime",
+  "version": "1.0.0",
+  "description": "simple peer",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "simple-peer",
+    "realtime"
+  ],
+  "author": "Miguelangel Parra",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "simple-peer": "^9.7.2",
+    "wrtc": "^0.4.5"
+  }
+}

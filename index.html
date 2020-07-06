@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <label ></label>
+<textarea id="yourId"></textarea>
+<label ></label>
+<textarea id="otherId"></textarea>
+<textarea id="tumensaje"></textarea>
+<textarea id="mensajes"></textarea>
+<button id="send">Enviar</button>
+<button id="connect">Conectar</button>
+<video id="video"></video>
+
+  <style>
+    #outgoing {
+      width: 600px;
+      word-wrap: break-word;
+      white-space: normal;
+    }
+  </style> 
+  <form>
+    <textarea id="incoming"></textarea>
+    <button type="submit">submit</button>
+  </form>
+  <pre id="outgoing"></pre>
+  <script src="./simplepeer.min.js"></script> 
+  <script>
+    navigator.mediaDevices.getUserMedia({
+  video: true,
+  audio: true
+}).then(function (stream) {
+  var peer1 = new SimplePeer({ initiator: location.hash==="#init", stream: stream ,trickle:false})
+  var peer2 = new SimplePeer()
+ 
+  peer1.on('signal', data => {
+    document.getElementById("yourId").value=JSON.stringify(data)
+   // peer2.signal(data)
+  })
+ 
+  document.getElementById("connect").addEventListener("click",()=>{
+    var otherId= JSON.parse(document.getElementById("otherId").value)
+peer1.signal(otherId)
+})
+
+document.getElementById("send").addEventListener("click",()=>{
+  var mensaje= document.getElementById("tumensaje").value
+  peer1.send(mensaje)
+})
+
+peer1.on("data",(data)=>{
+  document.getElementById("mensajes").textContent=data+"\n"
+  console.log(data)
+})
+
+peer1.on("stream",(stream)=>{
+  var video = document.querySelector('video')
+ 
+    if ('srcObject' in video) {
+      video.srcObject = stream
+    } else {
+      video.src = window.URL.createObjectURL(stream) // for older browsers
+    }
+ 
+    video.play() 
+})
+
+  // peer2.on('signal', data => {
+  //   peer1.signal(data)
+  // })
+ 
+  // peer2.on('stream', stream1 => {
+  //   // got remote video stream, now let's show it in a video tag
+  //   var video = document.querySelector('video')
+ 
+  //   if ('srcObject' in video) {
+  //     video.srcObject = stream1
+  //   } else {
+  //     video.src = window.URL.createObjectURL(stream1) // for older browsers
+  //   }
+ 
+  //   video.play()
+  // })
+})
+ 
+
+  </script> 
+</body>
+</html>
